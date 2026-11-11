@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+<body>
+<form action="#" th:action="@{/soapResult}" th:object="${param}" method="post">
+    <select name="currencies" th:field="*{currency}">
+        <option value="EUR">EUR</option>
+        <option value="USD">USD</option>
+        <option value="GBP">GBP</option>
+        <option value="JPY">JPY</option>
+    </select><br>
+    Start date: <input type="date" th:field="*{startDate}"><br>
+    End date: <input type="date" th:field="*{endDate}"><br>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
