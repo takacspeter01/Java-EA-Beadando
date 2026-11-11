@@ -1,14 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    <script src="https://cloudflare.com"></script>
+    <script th:src="@{/webjars/chart.js/4.4.7/dist/chart.umd.js}"></script>
 </head>
 <body>
-<h1>Historical prices:</h1>
+    <h1>Historical prices:</h1>
     <p th:text="'Prices: ' + ${sendOut}"></p>
+
+    <!-- Chart konténer-->
+    <div style="width: 100%; max-width: 700px; margin: 20px 0;">
+        <canvas id="priceChart"></canvas>
+    </div>
+
     <a th:href="@{'/soap'}">Back to the form</a>
+
+    <!-- Chart script-->
+    <script th:inline="javascript">
+        const rawData = /*[[${sendOut}]]*/ "";
+
+        // 1. Extract the XML portion starting from <MNBExchangeRates>
+        const xmlStart = rawData.indexOf("<MNBExchangeRates>");
+        let labels = [];
+        let priceValues = [];
+
+        if (xmlStart !== -1) {
+            const xmlString = rawData.substring(xmlStart);
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+            const days = xmlDoc.getElementsByTagName("Day");
+
+            for (let i = 0; i < days.length; i++) {
+                const date = days[i].getAttribute("date");
+                const rateNode = days[i].getElementsByTagName("Rate")[0];
+                if (date && rateNode) {
+                    // Convert Hungarian comma decimal ("364,92000") to JS float (364.92)
+                    const rateValue = parseFloat(rateNode.textContent.replace(",", "."));
+                    labels.push(date);
+                    priceValues.push(rateValue);
+                }
+            }
+
+            // MNB returns newest date first; reverse so oldest is on the left
+            labels.reverse();
+            priceValues.reverse();
+        }
+
+        // 2. Render the Line Chart
+        const ctx = document.getElementById('priceChart');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Exchange Rate (HUF)',
+                    data: priceValues,
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: false
+                    }
+                }
+            }
+        });
+    </script>
+
+
 </body>
 </html>
