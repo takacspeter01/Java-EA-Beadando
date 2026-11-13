@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Select instrument</h1>
+    <form action="#" th:action="@{/actual_prices}" th:object="${par}" method="post">
+        <select name="instruments" th:field="*{instrument}">
+            <option value="EUR_USD">EUR_USD</option>
+            <option value="USD_CHF">USD_CHF</option>
+            <option value="GBP_USD">GBP_USD</option>
+            <option value="USD_JPY">USD_JPY</option>
+            ……………………………
+        </select>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
