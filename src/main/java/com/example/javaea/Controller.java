@@ -21,6 +21,18 @@ import com.oanda.v20.pricing.PricingGetResponse;
 import com.oanda.v20.primitives.InstrumentName;
 import static com.oanda.v20.instrument.CandlestickGranularity.*;
 
+import com.oanda.v20.order.MarketOrderRequest;
+import com.oanda.v20.order.OrderCreateRequest;
+import com.oanda.v20.order.OrderCreateResponse;
+import com.oanda.v20.order.OrderPositionFill;
+import com.oanda.v20.order.TimeInForce;
+import com.oanda.v20.trade.Trade;
+import com.oanda.v20.trade.TradeCloseRequest;
+import com.oanda.v20.trade.TradeCloseResponse;
+import com.oanda.v20.trade.TradeSpecifier;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,6 +141,119 @@ public class Controller<End> {
         return "result_hist_prices";
     }
 
+    @GetMapping("/forex_nyit")
+    public String forexNyit() {
+        return "forex_nyit";
+    }
+
+    @PostMapping("/forex_nyit")
+    public String forexNyitPost(
+            @RequestParam String instrument,
+            @RequestParam int units,
+            Model model) {
+
+        try {
+            if (!List.of("EUR_USD", "GBP_USD", "USD_JPY")
+                    .contains(instrument)) {
+                throw new IllegalArgumentException(
+                        "Érvénytelen instrumentum!");
+            }
+
+            if (units == 0 || Math.abs((long) units) > 1000) {
+                throw new IllegalArgumentException(
+                        "A mennyiség -1000 és 1000 között " +
+                                "lehet, de nem lehet nulla.");
+            }
+
+            MarketOrderRequest order = new MarketOrderRequest()
+                    .setInstrument(instrument)
+                    .setUnits(Integer.toString(units))
+                    .setTimeInForce(TimeInForce.FOK)
+                    .setPositionFill(OrderPositionFill.DEFAULT);
+
+            OrderCreateRequest request =
+                    new OrderCreateRequest(ForexConfig.ACCOUNTID);
+            request.setOrder(order);
+
+            OrderCreateResponse response = ctx.order.create(request);
+
+            if (response.getOrderFillTransaction() != null) {
+                model.addAttribute("uzenet",
+                        "A piaci megbízás teljesült!");
+            } else {
+                model.addAttribute("uzenet",
+                        "A megbízás nem teljesült. " +
+                                "Ellenőrizd az OANDA választ!");
+            }
+
+        } catch (Exception e) {
+            model.addAttribute("uzenet",
+                    "Hiba: " + e.getMessage());
+        }
+
+        return "forex_nyit";
+    }
+
+    @GetMapping("/forex_poz")
+    public String forexPoz(Model model) {
+
+        try {
+            List<Trade> trades =
+                    ctx.trade.listOpen(
+                            ForexConfig.ACCOUNTID).getTrades();
+
+            model.addAttribute("trades", trades);
+
+        } catch (Exception e) {
+            model.addAttribute("hiba", e.getMessage());
+        }
+
+        return "forex_poz";
+    }
+
+
+    @GetMapping("/forex_zar")
+    public String forexZar() {
+        return "forex_zar";
+    }
+
+    @PostMapping("/forex_zar")
+    public String forexZarPost(
+            @RequestParam String tradeId,
+            Model model) {
+
+        try {
+            if (!tradeId.matches("[0-9]+")) {
+                throw new IllegalArgumentException(
+                        "A Trade ID csak számokat tartalmazhat!");
+            }
+
+            TradeCloseRequest request =
+                    new TradeCloseRequest(
+                            ForexConfig.ACCOUNTID,
+                            new TradeSpecifier(tradeId));
+
+            request.setUnits("ALL");
+
+            TradeCloseResponse response =
+                    ctx.trade.close(request);
+
+            if (response.getOrderFillTransaction() != null) {
+                model.addAttribute("uzenet",
+                        "A pozíció sikeresen lezárult!");
+            } else {
+                model.addAttribute("uzenet",
+                        "A zárás nem teljesült. " +
+                                "Ellenőrizd az OANDA választ!");
+            }
+
+        } catch (Exception e) {
+            model.addAttribute("uzenet",
+                    "Hiba: " + e.getMessage());
+        }
+
+        return "forex_zar";
+    }
 
 
 

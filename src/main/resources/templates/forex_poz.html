@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+    <title>Forex - Nyitott pozíciók</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body style="padding: 40px;">
+
+<h1>Forex - Nyitott pozíciók</h1>
+
+<p th:if="${hiba}" th:text="${hiba}"></p>
+
+<div class="table-wrapper">
+    <table>
+        <thead>
+        <tr>
+            <th>Trade ID</th>
+            <th>Instrumentum</th>
+            <th>Mennyiség</th>
+            <th>Nyitási ár</th>
+            <th>Nyitás ideje</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="trade : ${trades}">
+            <td th:text="${trade.id}"></td>
+            <td th:text="${trade.instrument}"></td>
+            <td th:text="${trade.currentUnits}"></td>
+            <td th:text="${trade.price}"></td>
+            <td th:text="${trade.openTime}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<p th:if="${trades != null and #lists.isEmpty(trades)}">
+    Jelenleg nincs nyitott pozíció.
+</p>
+
+<a href="/forex_poz">Frissítés</a>
+<br>
+<a href="/">Vissza a főoldalra</a>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+    <title>Forex - Pozíció nyitása</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <style>
+        select,
+        select option,
+        input[type="number"],
+        input[type="date"] {
+            color: #111111 !important;
+            background-color: #ffffff !important;
+            -webkit-text-fill-color: #111111 !important;
+        }
+
+        select:focus,
+        input[type="number"]:focus {
+            color: #111111 !important;
+            background-color: #ffffff !important;
+        }
+    </style>
+</head>
+<body style="padding: 40px;">
+
+<h1>Forex - Pozíció nyitása</h1>
+
+<form action="/forex_nyit" method="post">
+
+    <label for="instrument">Instrumentum:</label>
+    <select name="instrument" id="instrument">
+        <option value="EUR_USD">EUR/USD</option>
+        <option value="GBP_USD">GBP/USD</option>
+        <option value="USD_JPY">USD/JPY</option>
+    </select>
+
+    <label for="units">Mennyiség:</label>
+    <input type="number" name="units"
+           id="units" value="1"
+           min="-1000" max="1000"
+           step="1" required>
+
+    <p>Pozitív: Long, negatív: Short</p>
+
+    <button type="submit"
+            onclick="return confirm(
+          'Biztosan nyitsz egy DEMO pozíciót?')">
+        Pozíció nyitása
+    </button>
+</form>
+
+<p th:if="${uzenet}"
+   th:text="${uzenet}"></p>
+
+<a href="/">Vissza a főoldalra</a>
+
+</body>
+</html>
