@@ -5,8 +5,11 @@
     <title>Forex - History ár</title>
     <link rel="stylesheet" href="/assets/css/main.css">
 </head>
-<body>
-<h1> Select instrument and granularity for Historical price</h1>
+<body style="padding: 40px;">
+
+<h1>Forex - Hist Ár</h1>
+
+<h3> Select instrument and granularity for Historical price</h3>
 <form action="#" th:action="@{/hist_prices}" th:object="${param}" method="post">
     <select name="instruments" th:field="*{instrument}">
         <option value="EUR_USD">EUR_USD</option>
@@ -22,7 +25,12 @@
         <option value="M">M</option>
     </select>
     <input type="submit" value="Submit">
+
 </form>
+<footer id="footer">
+    <p class="copyright"> Takács Péter OE09T3 - Csizik Dávid IVHVX8</a>.</p>
+
+</footer>
 
 </body>
 </html>

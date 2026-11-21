@@ -13,7 +13,9 @@
         }
     </style>
 </head>
-<body>
+<body style="padding: 40px;">
+
+<h1>SOAP</h1>
 <form action="#" th:action="@{/soapResult}" th:object="${param}" method="post">
     <select name="currencies" th:field="*{currency}">
         <option value="EUR">EUR</option>
@@ -25,5 +27,9 @@
     End date: <input type="date" th:field="*{endDate}"><br>
     <input type="submit" value="Submit">
 </form>
+<footer id="footer">
+    <p class="copyright"> Takács Péter OE09T3 - Csizik Dávid IVHVX8</a>.</p>
+
+</footer>
 </body>
 </html>

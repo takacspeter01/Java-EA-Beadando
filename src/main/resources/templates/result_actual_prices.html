@@ -2,12 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/assets/css/main.css">
     <title>Forex- Aktuális ár</title>
 </head>
-<body>
-    <h1>Actual prices result</h1>
+<body style="padding: 40px;">
+
+<h1>Forex - Aktuális Ár Result</h1>
+
+    <h3>Actual prices result</h3>
     <p th:text="'Instrument: ' + ${instr}" />
     <p th:text="'Actual price: ' + ${price}" />
     <a th:href="@{'/actual_prices'}">Select another instrument</a>
+    <footer id="footer">
+        <p class="copyright"> Takács Péter OE09T3 - Csizik Dávid IVHVX8</a>.</p>
+
+    </footer>
 </body>
 </html>

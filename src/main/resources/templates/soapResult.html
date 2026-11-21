@@ -9,8 +9,10 @@
     <script src="https://cloudflare.com"></script>
     <script th:src="@{/webjars/chart.js/4.4.7/dist/chart.umd.js}"></script>
 </head>
-<body>
-    <h1>Historical prices:</h1>
+<body style="padding: 40px;">
+
+<h1>SOAP</h1>
+    <h3>Historical prices:</h3>
     <p th:text="'Prices: ' + ${sendOut}"></p>
 
     <!-- Chart konténer-->
@@ -76,6 +78,11 @@
             }
         });
     </script>
+
+    <footer id="footer">
+        <p class="copyright"> Takács Péter OE09T3 - Csizik Dávid IVHVX8</a>.</p>
+
+    </footer>
 
 
 </body>

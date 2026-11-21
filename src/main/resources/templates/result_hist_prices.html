@@ -2,13 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/assets/css/main.css">
     <title>Forex - History ár</title>
 </head>
-<body>
-<h1>Historical prices result</h1>
+<body style="padding: 40px;">
+
+<h1>Forex - Aktuális Ár Result</h1>
+<h3>Historical prices result</h3>
 <p th:text="'Instrument: ' + ${instr}" />
 <p th:text="'Granularity: ' + ${granularity}" />
 <p th:text="'Historical prices: ' + ${price}" />
 <a th:href="@{'/hist_prices'}">Select another instrument</a>
+<footer id="footer">
+    <p class="copyright"> Takács Péter OE09T3 - Csizik Dávid IVHVX8</a>.</p>
+
+</footer>
 </body>
 </html>

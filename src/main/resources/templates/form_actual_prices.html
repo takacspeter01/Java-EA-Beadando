@@ -5,8 +5,11 @@
     <title>Forex- Aktuális ár</title>
     <link rel="stylesheet" href="/assets/css/main.css">
 </head>
-<body>
-    <h1>Select instrument</h1>
+<body style="padding: 40px;">
+
+    <h1>Forex - Aktuális Ár</h1>
+
+    <h3>Select instrument</h3>
     <form action="#" th:action="@{/actual_prices}" th:object="${par}" method="post">
         <select name="instruments" th:field="*{instrument}">
             <option value="EUR_USD">EUR_USD</option>
@@ -16,5 +19,9 @@
         </select>
         <input type="submit" value="Submit">
     </form>
+    <footer id="footer">
+        <p class="copyright"> Takács Péter OE09T3 - Csizik Dávid IVHVX8</a>.</p>
+
+    </footer>
 </body>
 </html>
